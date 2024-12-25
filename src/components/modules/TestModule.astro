@@ -1,0 +1,48 @@
+---
+import FormElement from '@components/partials/FormElement.astro';
+import "@styles/styles.scss"
+---
+
+<main>
+    <div class="container container-md--fullsize container-lg container-xl--fullsize">
+        <div class="flex-container">
+            <div class="col-6">
+                <p style="border: 1px solid var(--color-border)">
+                    col-6
+                </p>
+            </div>
+
+            <div class="col-6">
+                <p style="border: 1px solid var(--color-border)">
+                    col-6
+                </p>
+            </div>
+
+            <div class="col--fullsize">
+                <h2 style="border: 1px solid var(--color-border)">
+                    fullsize col
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="g-col-6 g-row-1">
+                <p style="border: 1px solid var(--color-border)">
+                    g-col-6
+                </p>
+            </div>
+
+            <div class="g-col-6 g-row-1">
+                <p style="border: 1px solid var(--color-border)">
+                    g-col-6
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    import {formExample} from "@scripts/modules/form-example";
+
+    formExample.init();
+</script>

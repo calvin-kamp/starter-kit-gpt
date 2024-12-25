@@ -1,0 +1,15 @@
+@use 'sass:map';
+
+@use '@styles/utils' as *;
+
+:root {
+    @each $color, $color-value in map.get($colors, light) {
+        --color-#{'#{$color}'}: #{$color-value};
+    }
+}
+
+@media (prefers-color-scheme: dark){
+    :root {
+
+    }
+}

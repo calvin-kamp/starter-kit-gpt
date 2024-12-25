@@ -1,0 +1,31 @@
+---
+const { title = '', isAccordionContainer = false, accordionSettings = '' } = Astro.props;
+const settingsJSON = accordionSettings ? encodeURIComponent(JSON.stringify(accordionSettings)) : '';
+---
+
+{isAccordionContainer ? (
+
+    <div class="accordion-container" data-js="accordion">
+        <slot />
+    </div>
+
+) : (
+
+    <div class="accordion ac">
+        <div class="ac-header">
+            <button type="button" class="ac-trigger">
+                {title}
+            </button>
+        </div>
+        <div class="ac-panel">
+            <div>
+                <slot />
+            </div>
+        </div>
+    </div>
+
+)}
+
+<script>
+
+</script>

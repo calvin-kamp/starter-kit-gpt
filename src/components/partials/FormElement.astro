@@ -1,0 +1,47 @@
+---
+const { fieldType = 'text', fieldName, isRequired = false, requiredMessage = '', minLength = 0, gridClasses = '', additionalClasses = '' } = Astro.props;
+
+const elementModifiers = {
+    textarea: 'form-element--textarea',
+    checkbox: 'form-element--option',
+    radio: 'form-element--option'
+};
+
+const modifierClass = elementModifiers[fieldType] || 'form-element--input';
+const dataValidation = isRequired || requiredMessage?.length > 0 ? 'data-validation-required' : '';
+---
+
+<div class={`form-element ${modifierClass} ${additionalClasses} ${gridClasses}`}>
+    <label>
+
+        {fieldType === 'textarea' ? (
+
+            <textarea 
+                name={fieldName}
+                data-value=""
+                { ...{ [dataValidation]: '' } }
+                { ...(minLength > 0 && { minlength: `${minLength}` }) }
+            ></textarea>
+
+        ) : (
+
+            <input 
+                type={fieldType} 
+                name={fieldName} 
+                value=""
+                { ...{ [dataValidation]: '' } }
+                { ...(minLength > 0 && { minlength: `${minLength}` }) }
+            />
+
+        )}
+
+        <span>
+            <slot />
+        </span>
+
+        {requiredMessage?.length > 0 && (
+            <small>{requiredMessage}</small>
+        )}
+
+    </label>
+</div>

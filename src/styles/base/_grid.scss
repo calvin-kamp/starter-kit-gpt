@@ -1,0 +1,171 @@
+@use '@styles/utils' as *;
+
+/* -------------------------------------------------------- */
+/*                   BASE CONTAINER STYLES                  */
+/* -------------------------------------------------------- */
+
+/* Default container with responsive padding */
+.container {
+    @include make-container();
+}
+
+/* Fullsize container without padding or max-width */
+.container--fullsize {
+    @include make-container($fullsize: true);
+}
+
+/* -------------------------------------------------------- */
+/*                 RESPONSIVE CONTAINER LOGIC               */
+/* -------------------------------------------------------- */
+
+// Responsive max-width based on $container-max-widths
+.container {
+    @each $viewport, $container-max-width in $container-max-widths {
+
+        @include viewport($viewport) {
+            max-width: $container-max-width;
+        }
+
+    }
+
+}
+
+/* Generate container classes for each breakpoint */
+@each $viewport, $container-max-width in $container-max-widths {
+
+    @include viewport($viewport) {
+        
+        /* Responsive container for specific breakpoints */
+        .container-#{$viewport} {
+            @include make-container($fullsize: false, $max-width: $container-max-width);
+        }
+
+        /* Fullsize container for specific breakpoints */
+        .container-#{$viewport}--fullsize {
+            @include make-container($fullsize: true);
+        }
+
+    }
+
+}
+
+
+@if $enable-flex-container {
+
+    .flex-container {
+        @include flex();
+    
+        @for $i from 1 through $grid-columns {
+    
+            .col-#{$i} {
+                @include make-col($size: $i);
+            }
+    
+            .col-left-#{$i} {
+                @include make-offset-col($size: $i, $direction: left);
+            }
+    
+            .col-right-#{$i} {
+                @include make-offset-col($size: $i, $direction: right);
+            }
+    
+        }
+    
+        .col--fullsize {
+            @include make-col($fullsize: true)
+        }
+    
+        @each $viewport, $width in $viewports {
+    
+            @if $viewport != "xs" {
+    
+                @include viewport($viewport) {
+    
+                    @for $i from 1 through $grid-columns {
+    
+                        .col-#{$viewport}-#{$i} {
+                            @include make-col($size: $i);
+                        }
+    
+                        .col-#{$viewport}-left-#{$i} {
+                            @include make-offset-col($size: $i, $direction: left);
+                        }
+    
+                        .col-#{$viewport}-right-#{$i} {
+                            @include make-offset-col($size: $i, $direction: right);
+                        }
+    
+                    }
+    
+                    .col-#{$viewport}--fullsize {
+                        @include make-col($fullsize: true)
+                    }
+    
+                }
+    
+            }
+    
+        }
+    
+    }
+
+}
+
+@if $enable-grid-container {
+
+    .grid-container {
+        @include grid();
+    
+        @for $i from 1 through $grid-columns {
+            .g-col-#{$i} {
+                @include make-g-col($size: $i);
+            }
+    
+            .g-row-#{$i} {
+                @include make-g-col($size: $i, $row: true);
+            }
+    
+            .g-col-start-#{$i} {
+                @include make-g-col($start: $i);
+            }
+    
+            .g-row-start-#{$i} {
+                @include make-g-col($start: $i, $row: true);
+            }
+    
+        }
+    
+        @each $viewport, $width in $viewports {
+    
+            @if $viewport != xs {
+    
+                @include viewport($viewport) {
+    
+                    @for $i from 1 through $grid-columns {
+                        .g-col-#{$viewport}-#{$i} {
+                            @include make-g-col($size: $i);
+                        }
+    
+                        .g-row-#{$viewport}-#{$i} {
+                            @include make-g-col($size: $i, $row: true);
+                        }
+    
+                        .g-col-#{$viewport}-start-#{$i} {
+                            @include make-g-col($start: $i);
+                        }
+    
+                        .g-row-#{$viewport}-start-#{$i} {
+                            @include make-g-col($start: $i, $row: true);
+                        }
+    
+                    }
+    
+                }
+    
+            }
+    
+        }
+    
+    }
+
+}

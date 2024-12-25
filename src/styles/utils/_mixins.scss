@@ -1,0 +1,157 @@
+@use 'sass:map';
+@use 'sass:meta';
+
+@use '@styles/utils/_config' as *;
+@use '@styles/utils/_functions' as *;
+
+/* -------------------------------------------------------- */
+/*                          MIXINS                          */
+/* -------------------------------------------------------- */
+
+// Adds a media query for a specified viewport size
+@mixin viewport($viewport) {
+    @if not map.has-key($viewports, $viewport) {
+        @error "Invalid viewport: '$viewport'. It must be one of the following: #{map.keys($viewports)}.";
+    }
+
+    @media screen and (min-width: get-min-width($viewport)) {
+        @content;
+    }
+}
+
+// Adds a media query for a specified custom minimum width
+@mixin manual-viewport($viewport-min-width) {
+	@media screen and (min-width: $viewport-min-width) {
+		@content;
+	}
+}
+
+// Applies a flexbox layout with customizable direction, wrap, justify, and align
+@mixin flex($flex-direction: row, $flex-wrap: wrap, $justify-content: flex-start, $align-items: stretch) {
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-direction: $flex-direction;
+    -ms-flex-direction: $flex-direction;
+    flex-direction: $flex-direction;
+
+    -webkit-flex-wrap: $flex-wrap;
+    -ms-flex-wrap: $flex-wrap;
+    flex-wrap: $flex-wrap;
+
+    justify-content: $justify-content;
+    align-items: $align-items;
+}
+
+// Adds a CSS grid layout with customizable columns, rows, and row gaps
+@mixin grid($grid-template-columns: $grid-columns, $grid-template-rows: none) {
+	display: -ms-grid;
+	display: grid;
+	grid-auto-flow: row;
+
+	@if $grid-template-rows != none {
+
+		-ms-grid-rows: $grid-template-rows;
+		grid-template-rows: $grid-template-rows;
+
+	}
+
+	-ms-grid-columns: repeat(#{$grid-template-columns}, 1fr);
+	grid-template-columns: repeat(#{$grid-template-columns}, 1fr);
+
+}
+
+// Mixin for generating column classes
+@mixin make-col($fullsize: false, $size: null) {
+    @if $fullsize == false and ($size == null or meta.type-of($size) != 'number' or $size < 1 or $size > $grid-columns) {
+        @error "Invalid size: '$size'. It must be a number between 1 and #{$grid-columns}.";
+    }
+
+    flex: 0 0 auto;
+
+    @if $fullsize {
+
+        width: 100%;
+
+    } @else if $size != null {
+
+        width: grid-size($size);
+        padding: 0 $col-padding;
+
+    }
+
+}
+
+@mixin make-offset-col($size: null, $direction: left) {
+
+    @if $size != null {
+
+        margin-#{$direction}: grid-size($size);
+
+    }
+
+}
+
+/* Mixin for generating grid columns */
+@mixin make-g-col($size: null, $start: null, $row: false) {
+
+    @if $start != null {
+
+        @if $row {
+
+            grid-row-start: $start;
+
+        } @else {
+
+            grid-column-start: $start;
+
+        }
+
+    } @else {
+
+        @if $size != null {
+
+            @if $row {
+    
+                grid-row: auto / span $size;
+                padding-top: $col-padding;
+                padding-bottom: $col-padding;
+    
+            } @else {
+    
+                grid-column: auto / span $size;
+                padding-left: $col-padding;
+                padding-right: $col-padding;
+    
+            }
+    
+        }
+
+    }
+
+}
+
+@mixin make-container($fullsize: false, $max-width: null) {
+
+    width: 100%;
+
+    @if $fullsize {
+
+        max-width: none;
+        padding: 0;
+
+    } @else {
+
+        @if $max-width != null {
+
+            max-width: $max-width;
+
+        }
+
+        padding: 0 $container-padding;
+        margin: 0 auto;
+
+    }
+
+}

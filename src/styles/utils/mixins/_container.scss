@@ -1,0 +1,19 @@
+@mixin make-container($fullsize: false) {
+
+    width: 100%;
+
+    @if $fullsize {
+
+        max-width: none;
+
+    } @else {
+
+        @if $max-width != null {
+
+            max-width: $max-width;
+
+        }
+
+    }
+
+}

@@ -1,0 +1,14 @@
+@use '@styles/utils' as *;
+
+/* Mixin for responsive padding based on viewport */
+@mixin responsive-padding() {
+    padding: 0 $grid-gap;
+
+    @include viewport(md) {
+        padding: 0 $grid-gap * 1.2;
+    }
+
+    @include viewport(lg) {
+        padding: 0 $grid-gap * 1.5;
+    }
+}
